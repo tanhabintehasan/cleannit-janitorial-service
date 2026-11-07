@@ -27,7 +27,7 @@ export default async function LocationsPage() {
           <div className="grid grid-4" style={{ marginTop: 28 }}>
             {content.locations.map((l) => (
               <article className="card" key={l.slug}>
-                <Link href={`/locations/${l.slug}`} tabIndex={-1} aria-hidden="true">
+                <Link href={`/locations/${l.slug}`} tabIndex={-1}>
                   <Image src={l.image.src} alt={l.image.alt} width={600} height={400}
                     sizes="(max-width: 560px) 100vw, 25vw"
                     style={{ width: "100%", height: "auto", aspectRatio: "3/2", objectFit: "cover" }} />

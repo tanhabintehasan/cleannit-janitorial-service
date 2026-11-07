@@ -27,7 +27,7 @@ export default async function BlogPage() {
           <div className="grid grid-3" style={{ marginTop: 28 }}>
             {content.posts.map((post) => (
               <article className="card" key={post.slug}>
-                <Link href={`/blog/${post.slug}`} tabIndex={-1} aria-hidden="true">
+                <Link href={`/blog/${post.slug}`} tabIndex={-1}>
                   <Image src={post.image.src} alt={post.image.alt} width={600} height={400}
                     sizes="(max-width: 560px) 100vw, 33vw"
                     style={{ width: "100%", height: "auto", aspectRatio: "3/2", objectFit: "cover" }} />

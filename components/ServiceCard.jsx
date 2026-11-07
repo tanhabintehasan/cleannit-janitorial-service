@@ -5,7 +5,7 @@ export default function ServiceCard({ service, location }) {
   const href = `/services/${service.slug}`;
   return (
     <article className="card">
-      <Link href={href} tabIndex={-1} aria-hidden="true" className="card-img" style={{ display: "block", overflow: "hidden" }}>
+      <Link href={href} tabIndex={-1} className="card-img" style={{ display: "block", overflow: "hidden" }}>
         <Image
           src={service.cardImage.src}
           alt={service.cardImage.alt}

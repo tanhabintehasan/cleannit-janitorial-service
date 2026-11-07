@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 // Scroll-reveal: adds .in to every .reveal element as it enters the viewport.
+// Re-runs on every route change so client-side navigated pages are covered.
 export default function Reveal() {
+  const pathname = usePathname();
+
   useEffect(() => {
     document.documentElement.classList.add("js");
-    const els = document.querySelectorAll(".reveal");
+    const els = document.querySelectorAll(".reveal:not(.in)");
     if (!("IntersectionObserver" in window)) {
       els.forEach((el) => el.classList.add("in"));
       return;
@@ -24,6 +28,7 @@ export default function Reveal() {
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, [pathname]);
+
   return null;
 }
