@@ -43,6 +43,7 @@ export default async function ServicePage({ params }) {
             </div>
             <h1>{s.h1}</h1>
             <p className="lede">{s.intro}</p>
+            <p className="byline">Reviewed by <b>{settings.founder}</b>, Founder &amp; CEO · Licence #{settings.license} · Updated {s.updatedAt}</p>
             <div className="hero-actions">
               <a className="btn btn-accent" href={telHref}>Call {settings.phone}</a>
             </div>
@@ -58,6 +59,16 @@ export default async function ServicePage({ params }) {
       </section>
 
       <StatsBand />
+
+      {s.experience ? (
+        <section>
+          <div className="container reveal">
+            <span className="eyebrow">Our Experience</span>
+            <h2>Hands-On {s.name} Experience Across the GTA</h2>
+            <p style={{ maxWidth: 860, fontSize: "1.05rem" }}>{s.experience}</p>
+          </div>
+        </section>
+      ) : null}
 
       <section className="section-alt">
         <div className="container">

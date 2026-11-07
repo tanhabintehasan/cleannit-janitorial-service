@@ -2,6 +2,7 @@ import "./globals.css";
 import { getContent } from "@/lib/content";
 import { organizationSchema, localBusinessSchema, JsonLd } from "@/lib/schema";
 import Header from "@/components/Header";
+import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import FloatingContact from "@/components/FloatingContact";
 import Reveal from "@/components/Reveal";
@@ -26,6 +27,7 @@ export default async function RootLayout({ children }) {
     <html lang="en-CA">
       <body>
         <JsonLd data={[organizationSchema(content), localBusinessSchema(content)]} />
+        <TopBar />
         <Header />
         <main>{children}</main>
         <Footer />

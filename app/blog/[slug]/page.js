@@ -28,7 +28,8 @@ export default async function BlogPostPage({ params }) {
         <section style={{ paddingTop: 24 }}>
           <div className="container reveal" style={{ maxWidth: 820 }}>
             <h1>{post.title}</h1>
-            <p className="updated">Published {post.date} · Last updated: {post.updatedAt || post.date} · By the {content.settings.businessName} team</p>
+            <p className="updated">Published {post.date} · Last updated: {post.updatedAt || post.date}</p>
+            <p className="byline byline-dark">Written by the {content.settings.businessName} team · Reviewed by <b>{content.settings.founder}</b>, Founder &amp; CEO</p>
             <Image src={post.image.src} alt={post.image.alt} width={1200} height={800} priority
               sizes="(max-width: 900px) 100vw, 820px" style={{ width: "100%", height: "auto", borderRadius: 12 }} />
           </div>
