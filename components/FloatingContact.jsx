@@ -15,7 +15,6 @@ export default async function FloatingContact() {
       </a>
       <nav className="mobile-bar" aria-label="Quick contact">
         <a href={telHref}><PhoneIcon /> Call</a>
-        <a className="mb-wa" href={wa} target="_blank" rel="noopener"><WhatsAppIcon /> WhatsApp</a>
         <a className="mb-quote" href="/contact">Get Quote</a>
       </nav>
     </>
