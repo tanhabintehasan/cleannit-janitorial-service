@@ -18,7 +18,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const l = await getLocation(params.slug);
   if (!l) return {};
-  return { title: l.title, description: l.metaDescription, alternates: { canonical: `/locations/${l.slug}` } };
+  return {
+    title: l.title,
+    description: l.metaDescription,
+    alternates: { canonical: `/locations/${l.slug}` },
+    openGraph: { title: l.title, description: l.metaDescription, images: [{ url: l.image.src, alt: l.image.alt }] },
+  };
 }
 
 export default async function LocationPage({ params }) {

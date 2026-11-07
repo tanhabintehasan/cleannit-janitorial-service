@@ -14,7 +14,12 @@ export async function generateMetadata() {
     title: { default: settings.pages?.home?.title || settings.businessName, template: `%s` },
     description: settings.pages?.home?.metaDescription,
     icons: { icon: settings.favicon || "/images/logo.svg" },
-    openGraph: { siteName: settings.businessName, type: "website" },
+    openGraph: {
+      siteName: settings.businessName,
+      type: "website",
+      images: [{ url: "/images/cleannit-janitorial-branded-service-van-toronto.webp", width: 1600, height: 900, alt: "Cleannit Janitorial Services branded fleet van in Toronto" }],
+    },
+    twitter: { card: "summary_large_image" },
     robots: { index: true, follow: true },
   };
 }

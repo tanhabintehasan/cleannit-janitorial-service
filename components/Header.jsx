@@ -32,6 +32,7 @@ export default async function Header() {
           <Link href="/blog">Blog</Link>
           <Link href="/faq">FAQ</Link>
           <Link href="/contact">Contact</Link>
+          <a className="nav-call" href={`tel:${settings.phone.replace(/[^0-9+]/g, "")}`}>Call {settings.phone}</a>
         </nav>
         <div className="header-cta">
           <a className="btn btn-accent" href={`tel:${settings.phone.replace(/[^0-9+]/g, "")}`}>

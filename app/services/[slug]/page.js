@@ -19,7 +19,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const s = await getService(params.slug);
   if (!s) return {};
-  return { title: s.title, description: s.metaDescription, alternates: { canonical: `/services/${s.slug}` } };
+  return {
+    title: s.title,
+    description: s.metaDescription,
+    alternates: { canonical: `/services/${s.slug}` },
+    openGraph: { title: s.title, description: s.metaDescription, images: [{ url: s.hero.src, alt: s.hero.alt }] },
+  };
 }
 
 export default async function ServicePage({ params }) {

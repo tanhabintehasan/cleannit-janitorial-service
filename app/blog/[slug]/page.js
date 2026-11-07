@@ -14,7 +14,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const post = await getPost(params.slug);
   if (!post) return {};
-  return { title: post.title, description: post.metaDescription, alternates: { canonical: `/blog/${post.slug}` } };
+  return {
+    title: post.title,
+    description: post.metaDescription,
+    alternates: { canonical: `/blog/${post.slug}` },
+    openGraph: { title: post.title, description: post.metaDescription, type: "article", images: [{ url: post.image.src, alt: post.image.alt }] },
+  };
 }
 
 export default async function BlogPostPage({ params }) {

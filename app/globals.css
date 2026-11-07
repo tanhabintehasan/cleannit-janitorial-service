@@ -91,6 +91,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
 @media (max-width: 560px) { .tb-hide-sm { display: none; } .topbar-inner { justify-content: space-between; } }
 
 /* ---------- Header ---------- */
+.nav-call { display: none; }
 .site-header { background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); color: var(--deep); position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 18px rgba(10, 37, 64, 0.12); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 20px; max-width: 1180px; margin: 0 auto; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--deep); }
@@ -431,7 +432,12 @@ html.js .reveal.in { opacity: 1; transform: none; }
   .hero-bg-img { display: none; }
   .hero { background: linear-gradient(135deg, var(--deep) 0%, var(--deep-2) 55%, var(--deep-3) 100%); }
   .wa-float { bottom: calc(84px + env(safe-area-inset-bottom)); width: 54px; height: 54px; right: 14px; }
-  .main-nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; flex-direction: column; align-items: stretch; padding: 10px; box-shadow: 0 18px 30px rgba(10, 37, 64, 0.18); }
+  .main-nav { display: none; position: absolute; top: calc(100% + 8px); left: 12px; right: 12px; background: #fff; flex-direction: column; align-items: stretch; padding: 10px; border-radius: 16px; box-shadow: 0 24px 60px rgba(10, 37, 64, 0.28); border: 1px solid #e0ecf5; animation: fadeUp 0.25s ease both; }
+  .main-nav a { padding: 14px 16px; font-size: 1.05rem; font-weight: 600; border-radius: 10px; color: var(--deep); border-bottom: 1px solid #eef4f9; }
+  .main-nav a:last-child { border-bottom: 0; }
+  .main-nav a::after { display: none; }
+  .main-nav a:hover { background: #e8f2fd; color: var(--teal); }
+  .main-nav .nav-call { display: flex; background: linear-gradient(135deg, var(--amber), #f59e0b); color: var(--deep); justify-content: center; margin-top: 8px; font-weight: 800; }
   .nav-toggle:checked ~ .main-nav { display: flex; }
   .nav-toggle-label { display: flex; min-width: 48px; min-height: 48px; align-items: center; justify-content: center; cursor: pointer; color: var(--deep); font-size: 1.5rem; }
   .header-cta .btn { display: none; }

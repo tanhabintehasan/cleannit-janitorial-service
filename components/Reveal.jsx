@@ -10,6 +10,9 @@ export default function Reveal() {
 
   useEffect(() => {
     document.documentElement.classList.add("js");
+    // Close the mobile menu after every navigation / menu tap.
+    const navToggle = document.getElementById("nav-toggle");
+    if (navToggle) navToggle.checked = false;
     const els = document.querySelectorAll(".reveal:not(.in)");
     if (!("IntersectionObserver" in window)) {
       els.forEach((el) => el.classList.add("in"));
