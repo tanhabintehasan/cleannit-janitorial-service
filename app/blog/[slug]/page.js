@@ -9,14 +9,14 @@ import CtaBand from "@/components/CtaBand";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
-  const post = getPost(params.slug);
+  const post = await getPost(params.slug);
   if (!post) return {};
   return { title: post.title, description: post.metaDescription, alternates: { canonical: `/blog/${post.slug}` } };
 }
 
-export default function BlogPostPage({ params }) {
-  const content = getContent();
-  const post = getPost(params.slug);
+export default async function BlogPostPage({ params }) {
+  const content = await getContent();
+  const post = await getPost(params.slug);
   if (!post) notFound();
   const crumbs = [{ name: "Home", path: "/" }, { name: "Blog", path: "/blog" }, { name: post.title, path: `/blog/${post.slug}` }];
 

@@ -1,7 +1,7 @@
 import { getContent } from "@/lib/content";
 
-export default function StatsBand() {
-  const { settings } = getContent();
+export default async function StatsBand() {
+  const { settings } = await getContent();
   const reviews = settings.aggregateRating?.reviewCount;
   const rating = settings.aggregateRating?.ratingValue;
   return (

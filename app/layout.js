@@ -9,7 +9,7 @@ import Reveal from "@/components/Reveal";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
-  const { settings } = getContent();
+  const { settings } = await getContent();
   return {
     metadataBase: new URL(settings.domain),
     title: { default: settings.pages?.home?.title || settings.businessName, template: `%s` },
@@ -20,8 +20,8 @@ export async function generateMetadata() {
   };
 }
 
-export default function RootLayout({ children }) {
-  const content = getContent();
+export default async function RootLayout({ children }) {
+  const content = await getContent();
   return (
     <html lang="en-CA">
       <body>

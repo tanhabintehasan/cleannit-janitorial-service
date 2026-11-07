@@ -9,8 +9,8 @@ export const metadata = {
   robots: { index: false },
 };
 
-export default function ThankYouPage() {
-  const { settings } = getContent();
+export default async function ThankYouPage() {
+  const { settings } = await getContent();
   return (
     <section>
       <div className="container" style={{ maxWidth: 640, textAlign: "center", padding: "80px 20px" }}>

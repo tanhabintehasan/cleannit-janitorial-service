@@ -4,8 +4,8 @@ import { PhoneIcon, WhatsAppIcon } from "./Header";
 
 // Floating WhatsApp button + mobile sticky bar, both built entirely from the
 // phone/WhatsApp number in settings (admin-editable, updates site-wide).
-export default function FloatingContact() {
-  const { settings } = getContent();
+export default async function FloatingContact() {
+  const { settings } = await getContent();
   const wa = waLink(settings);
   const telHref = `tel:${settings.phone.replace(/[^0-9+]/g, "")}`;
   return (

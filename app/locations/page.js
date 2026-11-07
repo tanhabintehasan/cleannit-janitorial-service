@@ -15,8 +15,8 @@ export async function generateMetadata() {
   };
 }
 
-export default function LocationsPage() {
-  const content = getContent();
+export default async function LocationsPage() {
+  const content = await getContent();
   const crumbs = [{ name: "Home", path: "/" }, { name: "Locations", path: "/locations" }];
   return (
     <>

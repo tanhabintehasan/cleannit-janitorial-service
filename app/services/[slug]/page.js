@@ -14,14 +14,14 @@ import HeroDecor from "@/components/HeroDecor";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
-  const s = getService(params.slug);
+  const s = await getService(params.slug);
   if (!s) return {};
   return { title: s.title, description: s.metaDescription, alternates: { canonical: `/services/${s.slug}` } };
 }
 
-export default function ServicePage({ params }) {
-  const content = getContent();
-  const s = getService(params.slug);
+export default async function ServicePage({ params }) {
+  const content = await getContent();
+  const s = await getService(params.slug);
   if (!s) notFound();
   const { settings } = content;
   const telHref = `tel:${settings.phone.replace(/[^0-9+]/g, "")}`;

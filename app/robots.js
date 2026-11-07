@@ -1,7 +1,7 @@
 import { getContent } from "@/lib/content";
 
-export default function robots() {
-  const { settings } = getContent();
+export default async function robots() {
+  const { settings } = await getContent();
   return {
     rules: [
       { userAgent: "*", allow: "/", disallow: ["/admin", "/api"] },

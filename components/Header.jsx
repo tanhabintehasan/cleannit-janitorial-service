@@ -13,8 +13,8 @@ export function WhatsAppIcon() {
   );
 }
 
-export default function Header() {
-  const { settings } = getContent();
+export default async function Header() {
+  const { settings } = await getContent();
   return (
     <header className="site-header">
       <div className="header-inner">

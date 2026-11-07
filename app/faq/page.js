@@ -7,12 +7,12 @@ import CtaBand from "@/components/CtaBand";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
-  const { pages } = getContent();
+  const { pages } = await getContent();
   return { title: pages.faq.title, description: pages.faq.metaDescription, alternates: { canonical: "/faq" } };
 }
 
-export default function FaqPage() {
-  const content = getContent();
+export default async function FaqPage() {
+  const content = await getContent();
   const { settings, pages } = content;
   const p = pages.faq;
   const crumbs = [{ name: "Home", path: "/" }, { name: "FAQ", path: "/faq" }];

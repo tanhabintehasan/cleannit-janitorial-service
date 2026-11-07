@@ -1,7 +1,7 @@
 import { getContent } from "@/lib/content";
 
-export default function CtaBand({ heading, text }) {
-  const { settings } = getContent();
+export default async function CtaBand({ heading, text }) {
+  const { settings } = await getContent();
   const telHref = `tel:${settings.phone.replace(/[^0-9+]/g, "")}`;
   return (
     <div className="cta-band">

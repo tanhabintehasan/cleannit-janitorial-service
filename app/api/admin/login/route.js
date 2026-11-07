@@ -4,7 +4,7 @@ import { verifyCredentials, createSessionToken, sessionCookie, clearedCookie } f
 export async function POST(req) {
   try {
     const { username, password } = await req.json();
-    if (!verifyCredentials(String(username || ""), String(password || ""))) {
+    if (!(await verifyCredentials(String(username || ""), String(password || "")))) {
       return NextResponse.json({ error: "Invalid username or password." }, { status: 401 });
     }
     const res = NextResponse.json({ ok: true });

@@ -14,8 +14,8 @@ export async function generateMetadata() {
   };
 }
 
-export default function GalleryPage() {
-  const content = getContent();
+export default async function GalleryPage() {
+  const content = await getContent();
   const crumbs = [{ name: "Home", path: "/" }, { name: "Gallery", path: "/gallery" }];
   const items = [
     { src: "/images/cleannit-janitorial-branded-service-van-toronto.webp", alt: "Cleannit branded service van in Toronto", caption: "Our branded fleet — serving the whole GTA" },

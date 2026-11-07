@@ -15,8 +15,8 @@ export async function generateMetadata() {
   };
 }
 
-export default function ServicesPage() {
-  const content = getContent();
+export default async function ServicesPage() {
+  const content = await getContent();
   const crumbs = [{ name: "Home", path: "/" }, { name: "Services", path: "/services" }];
   return (
     <>

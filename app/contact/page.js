@@ -7,12 +7,12 @@ import { waLink } from "@/lib/schema";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
-  const { pages } = getContent();
+  const { pages } = await getContent();
   return { title: pages.contact.title, description: pages.contact.metaDescription, alternates: { canonical: "/contact" } };
 }
 
-export default function ContactPage() {
-  const content = getContent();
+export default async function ContactPage() {
+  const content = await getContent();
   const { settings, pages } = content;
   const p = pages.contact;
   const telHref = `tel:${settings.phone.replace(/[^0-9+]/g, "")}`;

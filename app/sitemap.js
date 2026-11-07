@@ -1,8 +1,8 @@
 import { getContent } from "@/lib/content";
 
 // Auto-generated from content: services/locations/blog edits appear on next request.
-export default function sitemap() {
-  const content = getContent();
+export default async function sitemap() {
+  const content = await getContent();
   const base = content.settings.domain;
   const now = new Date().toISOString();
   const staticPages = ["", "/services", "/locations", "/about", "/gallery", "/blog", "/faq", "/contact"].map((p) => ({

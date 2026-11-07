@@ -9,7 +9,7 @@ export async function POST(req) {
     }
     // Honeypot-style guard: silently drop bot payloads with a website field.
     if (data.website) return NextResponse.json({ ok: true });
-    addMessage({
+    await addMessage({
       name: String(data.name).slice(0, 120),
       phone: String(data.phone).slice(0, 40),
       email: String(data.email || "").slice(0, 120),

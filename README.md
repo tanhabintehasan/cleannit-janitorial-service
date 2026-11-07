@@ -18,6 +18,17 @@ npm start        # http://localhost:3000
 - Every save re-renders the live site, JSON-LD schemas, sitemap.xml and llm.txt automatically. Editing a service/location/post refreshes its "Last updated" date.
 - Image uploads auto-convert to WebP, auto-resize to ≤1600px and suggest alt text.
 
+## Database (Supabase Postgres)
+
+The site reads/writes all editable content from Supabase when env vars are present, and falls back to local JSON files automatically when they're not.
+
+- Project: `cleannit-janitorial-service` (region ap-south-1)
+- Tables: `site_content` (single JSONB doc — every page/setting), `messages` (contact-form inbox), `admin_credentials` (hashed login)
+- RLS enabled on all tables; the app uses the service-role key server-side only
+- Local env: `.env.local` (never committed — see `.env.example`)
+
+Required env vars: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_ANON_KEY`, `ADMIN_SECRET`.
+
 ## Deployment (cPanel-friendly)
 
 1. In cPanel: **Setup Node.js App** → Node 18+, application root = this folder, startup file: `server.js` (create: `require('next')` server) or use `npm start` via the app's "Run NPM Script".

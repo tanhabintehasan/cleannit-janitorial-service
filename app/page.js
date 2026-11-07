@@ -12,12 +12,12 @@ import HeroDecor from "@/components/HeroDecor";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
-  const { pages } = getContent();
+  const { pages } = await getContent();
   return { title: pages.home.title, description: pages.home.metaDescription, alternates: { canonical: "/" } };
 }
 
-export default function HomePage() {
-  const content = getContent();
+export default async function HomePage() {
+  const content = await getContent();
   const { settings, pages, services, locations } = content;
   const p = pages.home;
   const telHref = `tel:${settings.phone.replace(/[^0-9+]/g, "")}`;

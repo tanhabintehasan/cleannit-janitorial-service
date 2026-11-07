@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getContent } from "@/lib/content";
 
-export default function Footer() {
-  const content = getContent();
+export default async function Footer() {
+  const content = await getContent();
   const { settings } = content;
   const telHref = `tel:${settings.phone.replace(/[^0-9+]/g, "")}`;
   const addr = settings.address || {};

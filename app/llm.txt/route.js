@@ -3,8 +3,8 @@ import { getContent } from "@/lib/content";
 // llm.txt — Markdown-formatted plain text for LLM crawlers, served as text/plain.
 export const dynamic = "force-dynamic";
 
-export function GET() {
-  const content = getContent();
+export async function GET() {
+  const content = await getContent();
   const { settings } = content;
   const today = new Date().toISOString().slice(0, 10);
   const addr = settings.address || {};
