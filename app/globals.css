@@ -342,7 +342,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
 
 /* ---------- Footer ---------- */
 .site-footer { background: linear-gradient(180deg, var(--deep) 0%, #051c33 100%); color: #c2d6e8; margin-top: 64px; border-top: 4px solid transparent; border-image: linear-gradient(90deg, var(--mint), var(--teal), var(--amber)) 1; }
-.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 28px; padding: 54px 0 30px; }
+.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 28px; padding: 70px 0 34px; }
 .site-footer h3 { color: #fff; font-size: 1rem; margin-bottom: 14px; }
 .site-footer a { color: #c2d6e8; text-decoration: none; }
 .site-footer a:hover { color: var(--mint); }
@@ -446,7 +446,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
   .main-nav a:hover { background: #e8f2fd; color: var(--teal); }
   .main-nav .nav-call { display: flex; background: linear-gradient(135deg, var(--amber), #f59e0b); color: var(--deep); justify-content: center; margin-top: 8px; font-weight: 800; }
   .nav-toggle:checked ~ .main-nav { display: flex; }
-  .nav-toggle-label { display: flex; min-width: 48px; min-height: 48px; align-items: center; justify-content: center; cursor: pointer; color: var(--deep); font-size: 1.5rem; }
+  .nav-toggle-label { display: flex; min-width: 48px; min-height: 48px; align-items: center; justify-content: center; cursor: pointer; color: var(--deep); font-size: 1.5rem; margin-left: auto; }
   .header-cta .btn { display: none; }
   .hero-grid { padding: 48px 0; }
 }
