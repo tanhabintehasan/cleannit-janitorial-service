@@ -4,8 +4,6 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import QuoteForm from "@/components/QuoteForm";
 import { waLink } from "@/lib/schema";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata() {
   const { pages } = await getContent();
   return { title: pages.contact.title, description: pages.contact.metaDescription, alternates: { canonical: "/contact" } };

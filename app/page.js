@@ -9,8 +9,6 @@ import HeroPanel from "@/components/HeroPanel";
 import StatsBand from "@/components/StatsBand";
 import HeroDecor from "@/components/HeroDecor";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata() {
   const { pages } = await getContent();
   return { title: pages.home.title, description: pages.home.metaDescription, alternates: { canonical: "/" } };

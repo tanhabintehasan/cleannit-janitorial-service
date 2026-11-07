@@ -7,8 +7,6 @@ import Footer from "@/components/Footer";
 import FloatingContact from "@/components/FloatingContact";
 import Reveal from "@/components/Reveal";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata() {
   const { settings } = await getContent();
   return {

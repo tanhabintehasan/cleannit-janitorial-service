@@ -2,8 +2,6 @@ import Link from "next/link";
 import { getContent } from "@/lib/content";
 import { waLink } from "@/lib/schema";
 
-export const dynamic = "force-dynamic";
-
 export const metadata = {
   title: "Thank You | Cleannit Janitorial Services",
   robots: { index: false },

@@ -6,7 +6,10 @@ import FAQ from "@/components/FAQ";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CtaBand from "@/components/CtaBand";
 
-export const dynamic = "force-dynamic";
+export async function generateStaticParams() {
+  const content = await getContent();
+  return content.posts.map((p) => ({ slug: p.slug }));
+}
 
 export async function generateMetadata({ params }) {
   const post = await getPost(params.slug);

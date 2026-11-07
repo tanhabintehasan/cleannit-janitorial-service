@@ -5,8 +5,6 @@ import ServiceCard from "@/components/ServiceCard";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CtaBand from "@/components/CtaBand";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata() {
   return {
     title: "Cleaning Services Toronto | All Services | Cleannit Janitorial",

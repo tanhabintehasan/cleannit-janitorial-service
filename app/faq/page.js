@@ -4,8 +4,6 @@ import FAQ from "@/components/FAQ";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CtaBand from "@/components/CtaBand";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata() {
   const { pages } = await getContent();
   return { title: pages.faq.title, description: pages.faq.metaDescription, alternates: { canonical: "/faq" } };

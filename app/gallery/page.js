@@ -4,8 +4,6 @@ import { breadcrumbSchema, imageObjectSchema, JsonLd } from "@/lib/schema";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CtaBand from "@/components/CtaBand";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata() {
   return {
     title: "Our Work Gallery | Cleannit Janitorial Services Toronto",

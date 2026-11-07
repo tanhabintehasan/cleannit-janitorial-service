@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated, changePassword, verifyCredentials } from "@/lib/auth";
 import { getContent, saveContent } from "@/lib/content";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   if (!isAuthenticated()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -15,6 +16,7 @@ export async function PUT(req) {
       return NextResponse.json({ error: "Malformed content document." }, { status: 400 });
     }
     await saveContent(content);
+    revalidatePath("/", "layout"); // regenerate every static page with the new content
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Invalid JSON." }, { status: 400 });

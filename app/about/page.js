@@ -4,8 +4,6 @@ import { breadcrumbSchema, JsonLd } from "@/lib/schema";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CtaBand from "@/components/CtaBand";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata() {
   const { pages } = await getContent();
   return { title: pages.about.title, description: pages.about.metaDescription, alternates: { canonical: "/about" } };

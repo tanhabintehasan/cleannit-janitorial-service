@@ -10,7 +10,10 @@ import HeroPanel from "@/components/HeroPanel";
 import StatsBand from "@/components/StatsBand";
 import HeroDecor from "@/components/HeroDecor";
 
-export const dynamic = "force-dynamic";
+export async function generateStaticParams() {
+  const content = await getContent();
+  return content.locations.map((l) => ({ slug: l.slug }));
+}
 
 export async function generateMetadata({ params }) {
   const l = await getLocation(params.slug);

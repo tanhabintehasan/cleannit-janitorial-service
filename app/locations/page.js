@@ -5,8 +5,6 @@ import CtaBand from "@/components/CtaBand";
 import Link from "next/link";
 import Image from "next/image";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata() {
   return {
     title: "Service Areas — Toronto & GTA | Cleannit Janitorial Services",
