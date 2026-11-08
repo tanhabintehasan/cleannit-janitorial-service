@@ -189,6 +189,34 @@ export default async function HomePage() {
 
       <section className="section-alt">
         <div className="container reveal" style={{ maxWidth: 860 }}>
+          <span className="eyebrow eyebrow-center">Compare</span>
+          <h2 className="section-title">Cleannit vs. a Typical Cleaning Company</h2>
+          <p className="section-sub">What you actually get when you hire us — measured against what's typical in the Toronto market.</p>
+          <div className="price-table-wrap">
+            <table className="price-table">
+              <thead>
+                <tr><th scope="col">What matters</th><th scope="col">Cleannit</th><th scope="col">Typical company</th></tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Founder-led quality audits", "Every account", "Rarely"],
+                  ["Written zone checklists", "Every visit", "Sometimes"],
+                  ["Licensed & insured (Lic. #" + settings.license + ")", "Always", "Varies"],
+                  ["Same crew every visit", "Yes, dedicated", "Rotating strangers"],
+                  ["One contractor for 12 services", "Yes", "No — multiple vendors"],
+                  ["Fixed written quotes", "Always free", "Often vague"],
+                  ["Direct line to management", "Same day", "Call centres"],
+                ].map(([a, b, c], i) => (
+                  <tr key={i}><td>{a}</td><td><b>{b}</b></td><td>{c}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-alt">
+        <div className="container reveal" style={{ maxWidth: 860 }}>
           <span className="eyebrow eyebrow-center">Good to Know</span>
           <h2 className="section-title">Frequently Asked Questions</h2>
           <FAQ faqs={p.faqs} />

@@ -209,6 +209,35 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .quote-card .btn, .hero-form .btn { margin-top: 14px; width: 100%; }
 .form-note { font-size: 0.8rem; color: var(--muted); margin-top: 10px; text-align: center; }
 
+/* ---------- Pricing tables ---------- */
+.price-table-wrap { overflow-x: auto; border-radius: var(--radius); box-shadow: var(--shadow); }
+.price-table { width: 100%; border-collapse: collapse; background: #fff; font-size: 0.95rem; }
+.price-table thead th { background: linear-gradient(135deg, var(--deep), var(--deep-3)); color: #fff; text-align: left; padding: 14px 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.price-table td { padding: 13px 20px; border-bottom: 1px solid #e8f0f7; color: var(--ink); }
+.price-table tbody tr:nth-child(even) { background: #f5f9fd; }
+.price-table tbody tr:hover { background: #e8f2fd; }
+.price-table td b { color: var(--teal); }
+
+/* ---------- Multi-step quote form ---------- */
+.qprogress { display: flex; gap: 8px; margin-bottom: 14px; }
+.qseg { flex: 1; text-align: center; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 6px 0; border-bottom: 3px solid #dbe7f2; }
+.qseg.on { color: var(--teal); border-color: var(--teal); }
+.qstep-label { font-weight: 700; color: var(--deep); margin-bottom: 10px; }
+.qsvc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-height: 290px; overflow-y: auto; padding-right: 2px; }
+.qsvc-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 12px 6px; border: 1.5px solid #cfe0ee; border-radius: 10px; background: #f5f9fd;
+  font: inherit; font-size: 0.75rem; font-weight: 700; color: var(--deep); cursor: pointer;
+  transition: all .18s; text-align: center; line-height: 1.2; min-height: 64px; justify-content: center;
+}
+.qsvc-btn svg { color: var(--teal); }
+.qsvc-btn:hover { border-color: var(--teal); transform: translateY(-2px); }
+.qsvc-btn.sel { background: linear-gradient(135deg, var(--teal), var(--deep-2)); color: #fff; border-color: var(--teal); }
+.qsvc-btn.sel svg { color: #fff; }
+.qback { background: none; border: 0; color: var(--teal); font: inherit; font-weight: 700; font-size: 0.9rem; cursor: pointer; padding: 0 0 8px; }
+.quote-form .qsvc-grid { max-height: none; grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 560px) { .quote-form .qsvc-grid { grid-template-columns: repeat(3, 1fr); } }
+
 /* ---------- Marquee band ---------- */
 .marquee {
   overflow: hidden; white-space: nowrap; background: var(--deep-2);

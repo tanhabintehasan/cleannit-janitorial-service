@@ -10,6 +10,7 @@ import QuoteForm from "@/components/QuoteForm";
 import HeroPanel from "@/components/HeroPanel";
 import StatsBand from "@/components/StatsBand";
 import HeroDecor from "@/components/HeroDecor";
+import { priceTables } from "@/lib/local-content";
 
 export async function generateStaticParams() {
   const content = await getContent();
@@ -124,6 +125,20 @@ export default async function ServicePage({ params }) {
             <div className="pricing-card">
               <h2>{s.pricing.heading}</h2>
               <p>{s.pricing.p}</p>
+              {priceTables[s.slug] ? (
+                <div className="price-table-wrap" style={{ marginTop: 18 }}>
+                  <table className="price-table">
+                    <thead>
+                      <tr><th scope="col">Service scope</th><th scope="col">Typical Toronto price</th></tr>
+                    </thead>
+                    <tbody>
+                      {priceTables[s.slug].map(([scope, price], i) => (
+                        <tr key={i}><td>{scope}</td><td><b>{price}</b></td></tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : null}
               <h3 style={{ color: "#fff", marginTop: 16 }}>What affects your price</h3>
               <ul className="checklist grid grid-2">
                 {s.pricing.factors.map((f, i) => <li key={i}>{f}</li>)}

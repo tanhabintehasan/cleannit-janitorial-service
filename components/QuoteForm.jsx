@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ServiceIcon from "./ServiceIcon";
 
 function SparkleIcon() {
   return (
@@ -11,12 +12,15 @@ function SparkleIcon() {
 }
 
 export default function QuoteForm({ services = [], compact = false, formTitle = "Request a Free Quote", lockedService = null }) {
+  const [step, setStep] = useState(lockedService ? 2 : 1);
+  const [service, setService] = useState(lockedService || "");
   const [status, setStatus] = useState(null);
 
   async function onSubmit(e) {
     e.preventDefault();
     setStatus("sending");
     const data = Object.fromEntries(new FormData(e.target).entries());
+    data.service = service;
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -33,65 +37,75 @@ export default function QuoteForm({ services = [], compact = false, formTitle = 
     }
   }
 
-  const serviceField = lockedService ? (
-    <>
-      <input type="hidden" name="service" value={lockedService} />
-      <div className="locked-service">
-        <span>Service</span>
-        <b>{lockedService}</b>
-      </div>
-    </>
-  ) : (
-    <>
-      <label htmlFor={compact ? "hf-service" : "qf-service"}>Service Needed</label>
-      <select id={compact ? "hf-service" : "qf-service"} name="service">
-        <option value="">Select a service…</option>
-        {services.map((s) => (
-          <option key={s.slug} value={s.name}>{s.name}</option>
-        ))}
-        <option value="Other">Other / Not sure</option>
-      </select>
-    </>
+  const progress = (
+    <div className="qprogress" aria-hidden="true">
+      <span className={`qseg ${step >= 1 ? "on" : ""}`}>1 · Service</span>
+      <span className={`qseg ${step >= 2 ? "on" : ""}`}>2 · Details</span>
+    </div>
   );
 
-  const fields = compact ? (
-    <>
-      <div className="qf-row">
+  const stepOne = (
+    <div>
+      {progress}
+      <p className="qstep-label">What do you need cleaned?</p>
+      <div className="qsvc-grid">
+        {services.map((s) => (
+          <button
+            key={s.slug}
+            type="button"
+            className={`qsvc-btn ${service === s.name ? "sel" : ""}`}
+            onClick={() => setService(s.name)}
+          >
+            <ServiceIcon slug={s.slug} size={20} />
+            <span>{s.name}</span>
+          </button>
+        ))}
+        <button type="button" className={`qsvc-btn ${service === "Other" ? "sel" : ""}`} onClick={() => setService("Other")}>
+          <ServiceIcon slug="default" size={20} />
+          <span>Other</span>
+        </button>
+      </div>
+      <button type="button" className="btn btn-accent" style={{ width: "100%", marginTop: 14 }} disabled={!service} onClick={() => setStep(2)}>
+        Continue →
+      </button>
+    </div>
+  );
+
+  const stepTwo = (full) => (
+    <div>
+      {progress}
+      {!lockedService && (
+        <button type="button" className="qback" onClick={() => setStep(1)}>← {service || "Choose service"}</button>
+      )}
+      {lockedService && (
+        <div className="locked-service"><span>Service</span><b>{lockedService}</b></div>
+      )}
+      <div className={compact ? "qf-row" : ""}>
         <div>
-          <label htmlFor="hf-name">Name *</label>
-          <input id="hf-name" name="name" required autoComplete="name" />
+          <label htmlFor={compact ? "hf-name" : "qf-name"}>Name *</label>
+          <input id={compact ? "hf-name" : "qf-name"} name="name" required autoComplete="name" />
         </div>
         <div>
-          <label htmlFor="hf-phone">Phone *</label>
-          <input id="hf-phone" name="phone" type="tel" required autoComplete="tel" />
+          <label htmlFor={compact ? "hf-phone" : "qf-phone"}>Phone *</label>
+          <input id={compact ? "hf-phone" : "qf-phone"} name="phone" type="tel" required autoComplete="tel" />
         </div>
       </div>
-      {serviceField}
-      <button className="btn btn-accent" type="submit" disabled={status === "sending"}>
+      {full && (
+        <>
+          <label htmlFor="qf-email">Email</label>
+          <input id="qf-email" name="email" type="email" autoComplete="email" />
+          <label htmlFor="qf-city">City / Area</label>
+          <input id="qf-city" name="city" placeholder="e.g. North York" />
+          <label htmlFor="qf-msg">Tell us about the job</label>
+          <textarea id="qf-msg" name="message" rows={3} placeholder="Property type, size, frequency, timeline…" />
+        </>
+      )}
+      <button className="btn btn-accent" type="submit" disabled={status === "sending"} style={{ width: "100%", marginTop: 14 }}>
         {status === "sending" ? "Sending…" : "Schedule My Free Quote"}
       </button>
       {status === "error" && <p className="form-note admin-err">Something went wrong — please call us instead.</p>}
       <p className="form-note">No spam, ever. We reply within one business day.</p>
-    </>
-  ) : (
-    <>
-      <label htmlFor="qf-name">Name *</label>
-      <input id="qf-name" name="name" required autoComplete="name" />
-      <label htmlFor="qf-phone">Phone *</label>
-      <input id="qf-phone" name="phone" type="tel" required autoComplete="tel" />
-      <label htmlFor="qf-email">Email</label>
-      <input id="qf-email" name="email" type="email" autoComplete="email" />
-      {serviceField}
-      <label htmlFor="qf-city">City / Area</label>
-      <input id="qf-city" name="city" placeholder="e.g. North York" />
-      <label htmlFor="qf-msg">Tell us about the job</label>
-      <textarea id="qf-msg" name="message" rows={4} placeholder="Property type, size, frequency, timeline…" />
-      <button className="btn btn-accent" type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Sending…" : "Schedule My Free Quote"}
-      </button>
-      {status === "error" && <p className="form-note admin-err">Something went wrong — please call us instead.</p>}
-      <p className="form-note">No spam, ever. We reply within one business day.</p>
-    </>
+    </div>
   );
 
   if (compact) {
@@ -104,7 +118,9 @@ export default function QuoteForm({ services = [], compact = false, formTitle = 
             <p>Booked in under a minute · same-day response</p>
           </div>
         </div>
-        <form onSubmit={onSubmit}>{fields}</form>
+        <form onSubmit={onSubmit}>
+          {step === 1 ? stepOne : stepTwo(false)}
+        </form>
       </div>
     );
   }
@@ -112,7 +128,7 @@ export default function QuoteForm({ services = [], compact = false, formTitle = 
   return (
     <form className="quote-form" onSubmit={onSubmit}>
       <h2>{formTitle}</h2>
-      {fields}
+      {step === 1 && !lockedService ? stepOne : stepTwo(true)}
     </form>
   );
 }

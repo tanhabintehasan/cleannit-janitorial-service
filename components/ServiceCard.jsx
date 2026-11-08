@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 
-export default function ServiceCard({ service, location }) {
-  const href = `/services/${service.slug}`;
+export default function ServiceCard({ service, location, href }) {
+  const link = href || `/services/${service.slug}`;
   return (
     <article className="card">
-      <Link href={href} tabIndex={-1} className="card-img" style={{ display: "block", overflow: "hidden" }}>
+      <Link href={link} tabIndex={-1} className="card-img" style={{ display: "block", overflow: "hidden" }}>
         <Image
           src={service.cardImage.src}
           alt={service.cardImage.alt}
@@ -18,7 +18,7 @@ export default function ServiceCard({ service, location }) {
       <div className="card-body">
         <h3>{service.name}{location ? ` in ${location}` : ""}</h3>
         <p>{service.shortDesc}</p>
-        <Link className="card-link" href={href}>
+        <Link className="card-link" href={link}>
           Learn more about {service.name.toLowerCase()}{location ? ` in ${location}` : ""}
         </Link>
       </div>

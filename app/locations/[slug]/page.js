@@ -80,7 +80,9 @@ export default async function LocationPage({ params }) {
         <div className="container reveal">
           <h2>Our Services in {l.name}</h2>
           <div className="grid grid-3">
-            {content.services.map((s) => <ServiceCard key={s.slug} service={s} location={l.name} />)}
+            {content.services.map((s) => (
+              <ServiceCard key={s.slug} service={s} location={l.name} href={`/locations/${l.slug}/${s.slug}`} />
+            ))}
           </div>
         </div>
       </section>

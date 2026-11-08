@@ -23,11 +23,19 @@ export default async function sitemap() {
     changeFrequency: "monthly",
     priority: 0.85,
   }));
+  const localServices = content.locations.flatMap((l) =>
+    content.services.map((s) => ({
+      url: `${base}/locations/${l.slug}/${s.slug}`,
+      lastModified: s.updatedAt || now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    }))
+  );
   const posts = content.posts.map((p) => ({
     url: `${base}/blog/${p.slug}`,
     lastModified: p.updatedAt || p.date || now,
     changeFrequency: "monthly",
     priority: 0.6,
   }));
-  return [...staticPages, ...services, ...locations, ...posts];
+  return [...staticPages, ...services, ...locations, ...localServices, ...posts];
 }
