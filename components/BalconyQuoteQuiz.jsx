@@ -3,105 +3,79 @@
 import { useState } from "react";
 import Image from "next/image";
 
-// Pigeonbusters-style instant balcony quote quiz:
-// progress bar → 6 pictured questions → instant price-range estimate → contact form.
+// Instant balcony quote quiz — same 6-question pictured format, point system and
+// price tiers as the pigeonbusters.ca/balcony-netting-quote system.
 // Used on both balcony-netting and balcony-cleaning pages; `mode` decides framing.
 
-function ShapeIcon({ d }) {
-  return (
-    <svg viewBox="0 0 48 48" aria-hidden="true" className="bq-icon">
-      <path d={d} />
-    </svg>
-  );
-}
-
-const ICONS = {
-  rect: "M6 14h36v22H6z M6 14v22 M42 14v22",
-  lshape: "M6 10h20v14h16v16H6z",
-  irregular: "M8 12h32v24H24V24H8z",
-  juliette: "M10 12h28v24 M10 36h28 M14 12v24 M24 12v24 M34 12v24",
-  glass: "M8 10h32v26 M8 36h32 M8 10v26 M40 10v26 M16 30l10-16 M26 32l8-12",
-  picket: "M8 10h32 M8 36h32 M8 10v26 M40 10v26 M16 10v26 M24 10v26 M32 10v26",
-  concrete: "M8 14h32v22H8z M8 21h32 M8 29h32 M20 14v7 M32 21v8 M20 29v7",
-  cleanNo: "M24 8l3 8 8 3-8 3-3 8-3-8-8-3 8-3z M36 30l1.6 4.4L42 36l-4.4 1.6L36 42l-1.6-4.4L30 36l4.4-1.6z",
-  cleanLight: "M12 34h24 M14 30c4-3 16-3 20 0 M24 12v10 M19 16l5-4 5 4",
-  cleanHeavy: "M10 34h28 M12 34c0-8 4-12 8-12 M28 34c0-10 5-14 10-14 M18 22l3-8 3 8 M14 12l2 4 4-2",
-  ceilingStd: "M8 12h32 M10 12v18 M38 12v18 M14 30h20 M14 36h20",
-  ceilingHigh: "M8 8h32 M10 8v24 M38 8v24 M14 32h20 M14 40h20",
-  ceilingNone: "M14 16h20 M14 22h20 M12 30h24 M12 38h24 M36 8l4 4-4 4",
-  wallConcrete: "M8 12h32v24H8z M8 20h32 M8 28h32 M18 12v8 M30 20v8 M18 28v8",
-  wallSiding: "M10 12h28 M10 18h28 M10 24h28 M10 30h28 M10 36h28",
-  wallStucco: "M10 12h28v24H10z M16 18h2 M24 16h2 M32 20h2 M18 26h2 M28 28h2 M22 32h2 M34 32h2",
-  outletYes: "M18 10h12v14a6 6 0 01-12 0z M21 16h2 M25 16h2 M24 30v8",
-  outletNo: "M18 10h12v14a6 6 0 01-12 0z M21 16h2 M25 16h2 M24 30v6 M12 34l24 8 M36 34l-24 8",
-};
+const IMG = "/images/balcony-quiz";
 
 const QUESTIONS = [
   {
     key: "shape",
     q: "What shape/style/type is your balcony?",
     options: [
-      { v: "rectangular", label: "Rectangular / square", icon: "rect", pts: 0 },
-      { v: "l-shaped", label: "L-shaped / has a divider", icon: "lshape", pts: 1 },
-      { v: "irregular", label: "Irregular / turns a corner", icon: "irregular", pts: 1 },
-      { v: "juliette", label: "Juliette / very small", icon: "juliette", pts: 2 },
+      { v: "flush", pts: 0, img: `${IMG}/q1-flush.jpg`, label: "Flush Style.", desc: "Balcony is recessed into the building, and the railing is flush with the side of the building (with full walls on the left and right sides)." },
+      { v: "flush-open", pts: 10, img: `${IMG}/q1-flush-shared.jpg`, label: "Flush Style Open Sides.", desc: "This balcony is recessed but one or more of the sides might be open — common on corners or shared balconies with a divider." },
+      { v: "protruding", pts: 10, img: `${IMG}/q1-protruding.jpg`, label: "Protruding Style.", desc: "Balcony sticks out from the side of the building and the railing makes turns." },
+      { v: "special", pts: 101, img: `${IMG}/q1-shape.jpg`, label: "Special Shape or Size.", desc: "A curved shape or other unique design — double-tiered balconies, penthouses or high ceilings (anything higher than 10 feet)." },
     ],
   },
   {
     key: "railing",
     q: "What kind of railing is on your balcony?",
     options: [
-      { v: "glass", label: "Glass panels", icon: "glass", pts: 0 },
-      { v: "picket", label: "Metal pickets / bars", icon: "picket", pts: 0 },
-      { v: "concrete", label: "Concrete / solid wall", icon: "concrete", pts: 1 },
+      { v: "solid", pts: 1, img: `${IMG}/q2-solid.jpg`, label: "Full solid railing — No Gap.", desc: "A solid wall that goes right to the floor, often made of concrete, metal, or glass sheets." },
+      { v: "solid-gap", pts: 1, img: `${IMG}/q2-solid-gap.jpg`, label: "Full solid railing — With Gap.", desc: "Same as above but this railing has a small space/gap at the bottom near the floor where birds could potentially get through." },
+      { v: "open", pts: 2, img: `${IMG}/q2-railing.jpg`, label: "Open Railing / Bars.", desc: "Made of individual horizontal or vertical bars that have space between them." },
     ],
   },
   {
     key: "cleaning",
     q: "Does your balcony require cleaning / clearing out?",
     options: [
-      { v: "no", label: "No — it's already clean", icon: "cleanNo", pts: 0 },
-      { v: "light", label: "Light dust & debris", icon: "cleanLight", pts: 0 },
-      { v: "heavy", label: "Yes — droppings / nesting", icon: "cleanHeavy", pts: 1 },
+      { v: "no", pts: 0, img: `${IMG}/q3-clean.jpg`, label: "Nope!", desc: "It is clean, there are no bird droppings or nests anywhere and I will move the furniture out of the way before you arrive." },
+      { v: "yes", pts: 40, img: `${IMG}/q3-dirty.jpg`, label: "Yes, it is messy and needs cleaning.", desc: "I have to have it cleaned BEFORE the netting is installed — we can handle the cleanup and sanitization for you." },
     ],
   },
   {
     key: "ceiling",
     q: "Is there a ceiling above your balcony?",
     options: [
-      { v: "standard", label: "Yes — standard height", icon: "ceilingStd", pts: 0 },
-      { v: "high", label: "Yes — unusually high / top floor", icon: "ceilingHigh", pts: 2 },
-      { v: "none", label: "No ceiling above", icon: "ceilingNone", pts: 2 },
+      { v: "yes", pts: 0, img: `${IMG}/q4-cover.jpg`, label: "Yes there is a ceiling above.", desc: "There is a ceiling above when standing on the balcony that is not higher than 105 inches." },
+      { v: "no", pts: 101, img: `${IMG}/q4-open.jpg`, label: "Nope, nothing above.", desc: "No ceiling above the balcony — all exposed & open air above." },
     ],
   },
   {
     key: "wall",
     q: "What material is the wall around it made out of?",
     options: [
-      { v: "concrete", label: "Concrete / brick", icon: "wallConcrete", pts: 0 },
-      { v: "siding", label: "Metal / siding panels", icon: "wallSiding", pts: 1 },
-      { v: "stucco", label: "Stucco / drywall", icon: "wallStucco", pts: 2 },
+      { v: "concrete", pts: 0, img: `${IMG}/q5-concrete.jpg`, label: "Concrete.", desc: "Good ol' rock. Nothing beats that!" },
+      { v: "metal", pts: 0, img: `${IMG}/q5-metal.jpg`, label: "Metal.", desc: "Ooohhh shiny!" },
+      { v: "brick", pts: 0, img: `${IMG}/q5-brick.jpg`, label: "Brick.", desc: "Classic masonry — anchors hold great." },
+      { v: "stucco", pts: 101, img: `${IMG}/q5-stucco.jpg`, label: "Stucco.", desc: "Used all over the world for hundreds of years." },
+      { v: "wood", pts: 0, img: `${IMG}/q5-wood.jpg`, label: "Wood.", desc: "Makes it easy to knock on wood!" },
+      { v: "drywall", pts: 101, img: `${IMG}/q5-drywall.jpg`, label: "Drywall.", desc: "Needs special mounting — standard hardware won't hold." },
     ],
   },
   {
     key: "outlet",
     q: "Is there access to an electrical outlet close to the balcony?",
     options: [
-      { v: "yes", label: "Yes", icon: "outletYes", pts: 0 },
-      { v: "no", label: "No / not sure", icon: "outletNo", pts: 1 },
+      { v: "yes", pts: 0, img: `${IMG}/q6-power.jpg`, label: "Yes, there is access to power.", desc: "There is an electrical outlet on the balcony or on the inside of the apartment (we can bring an extension cord or cordless tools)." },
+      { v: "no", pts: 101, img: `${IMG}/q6-nopower.jpg`, label: "No plugs and no access to electricity nearby.", desc: "Unfortunately there is nothing close to the balcony, or the power is off — we'll have to bring cordless tools." },
     ],
   },
 ];
 
 const TIERS = [
-  { max: 0, range: "$325–$365", note: "Looks like your balcony is set up to be one of the easiest to work with! This makes setup and installation quick and easy — you'll have a bird-free balcony in no time." },
-  { max: 2, range: "$365–$425", note: "Nice — that was easy. You have a fairly standard balcony setup which makes it ideal for our netting service." },
-  { max: 3, range: "$385–$465", note: "All done. It looks like your balcony has some details that make installation a little more time-consuming and complex — but we can handle it!" },
-  { max: 99, range: "$425–$495", note: "It seems your balcony has a few complicated features that make installation more involved — but it's nothing we can't handle." },
+  { max: 4, range: "$325–$365", note: "Looks like your balcony is setup to be one of the easiest to work with! This will make setup and installation quick n' easy — you'll have a bird free balcony in no time." },
+  { max: 12, range: "$365–$425", note: "Nice — that was easy. You have a fairly standard balcony setup which makes it ideal for our services." },
+  { max: 45, range: "$385–$465", note: "All done. It looks like your balcony features some details that make installation a little more time consuming & complex — but we can handle it!" },
+  { max: 100, range: "$425–$495", note: "Well hello Mister Fancypants! It seems your balcony has a few complicated features on it that will make installation a little more involved, but it's nothing we can't handle." },
 ];
 
 const ESTIMATE_DISCLAIMER =
-  "Please note this is still an estimate — the price could be slightly higher if your balcony has extra dividers/turns, or if it is on the top floor where ceilings run higher than usual.";
+  "Please note that at this point this is still an estimation — the price could slightly be higher if your balcony has a divider/turns or if it is located on the top floor, where the ceiling can be higher than usual.";
 
 function scoreQuiz(answers) {
   let pts = 0;
@@ -109,16 +83,13 @@ function scoreQuiz(answers) {
     const opt = q.options.find((o) => o.v === answers[q.key]);
     if (opt) pts += opt.pts;
   }
-  const custom =
-    (answers.ceiling === "none" || answers.ceiling === "high") && answers.wall === "stucco";
-  if (custom) return { custom: true };
+  if (pts >= 101) return { custom: true };
   const tier = TIERS.find((t) => pts <= t.max);
-  return { custom: false, tier, needsCleaning: answers.cleaning === "heavy" };
+  return { custom: false, tier, needsCleaning: answers.cleaning === "yes" };
 }
 
 export default function BalconyQuoteQuiz({ mode = "balcony-netting", location = null, phone = "+1 437-288-7140" }) {
   const isNetting = mode === "balcony-netting";
-  const serviceName = isNetting ? "Balcony Netting" : "Balcony Cleaning";
   const [step, setStep] = useState(0); // 0..5 = questions, 6 = result
   const [answers, setAnswers] = useState({});
   const [status, setStatus] = useState(null);
@@ -136,17 +107,17 @@ export default function BalconyQuoteQuiz({ mode = "balcony-netting", location = 
     setStatus("sending");
     const data = Object.fromEntries(new FormData(e.target).entries());
     data.service = isNetting ? "Balcony Netting" : "Balcony Cleaning";
-    if (location) data.city = location;
+    if (location && !data.city) data.city = location;
     const answerLines = QUESTIONS.map((q) => {
       const opt = q.options.find((o) => o.v === answers[q.key]);
-      return `${q.q} ${opt ? opt.label : "—"}`;
+      return `${q.q} ${opt ? opt.label.replace(/\.$/, "") : "—"}`;
     });
     const estimate = result?.custom ? "Custom quote required (on-site visit)" : `Quiz estimate: ${result?.tier?.range || "—"}`;
     data.message = [
       `[Instant balcony quote quiz${location ? ` — ${location}` : ""}]`,
       `Estimate: ${estimate}`,
       ...answerLines,
-      data.message ? `Notes: ${data.message}` : "",
+      data.message ? `Balcony details: ${data.message}` : "",
     ].filter(Boolean).join("\n");
     try {
       const res = await fetch("/api/contact", {
@@ -165,8 +136,8 @@ export default function BalconyQuoteQuiz({ mode = "balcony-netting", location = 
   }
 
   const heading = isNetting
-    ? `Instant Balcony Netting Quote${location ? ` — ${location}` : ""}`
-    : `Instant Balcony Cleaning & Netting Quote${location ? ` — ${location}` : ""}`;
+    ? `Get Your Balcony Netting Quote Instantly${location ? ` — ${location}` : ""}`
+    : `Get Your Balcony Cleaning Quote Instantly${location ? ` — ${location}` : ""}`;
 
   return (
     <div className="bquiz" id="balcony-quote">
@@ -175,17 +146,16 @@ export default function BalconyQuoteQuiz({ mode = "balcony-netting", location = 
           <h2>{heading}</h2>
           <p>
             {isNetting
-              ? "It's super easy! Answer 6 quick questions to see how much it costs to bird-proof your balcony."
-              : "It's super easy! Answer 6 quick questions — get your balcony cleaned and see what permanent pigeon-proof netting would cost."}
+              ? "It's super easy! Just take this quick quiz to figure out how much it will cost to make your apartment balcony bird proof and put an end to your bird problems."
+              : "It's super easy! Just take this quick quiz — get your balcony professionally cleaned and see what permanent pigeon-proof netting would cost."}
           </p>
         </div>
         <div className="bquiz-head-img">
           <Image
-            src={isNetting ? "/images/bird-netting-pigeon-control-balcony-toronto.webp" : "/images/condo-balcony-cleaning-toronto.webp"}
-            alt={isNetting ? "Condo balcony in Toronto protected with pigeon netting" : "Toronto condo balcony before professional cleaning"}
-            width={560}
-            height={360}
-            sizes="(max-width: 720px) 100vw, 320px"
+            src={`${IMG}/q1-shape.jpg`}
+            alt={isNetting ? "Balcony netting quote — balcony styles and shapes" : "Balcony cleaning quote — balcony styles and shapes"}
+            width={300}
+            height={160}
             style={{ width: "100%", height: "auto" }}
           />
         </div>
@@ -203,8 +173,9 @@ export default function BalconyQuoteQuiz({ mode = "balcony-netting", location = 
           <div className="bquiz-grid">
             {QUESTIONS[step].options.map((o) => (
               <button key={o.v} type="button" className="bquiz-opt" onClick={() => pick(QUESTIONS[step].key, o.v)}>
-                <ShapeIcon d={ICONS[o.icon]} />
-                <span>{o.label}</span>
+                <Image src={o.img} alt={o.label.replace(/\.$/, "")} width={300} height={160} style={{ width: "100%", height: "auto" }} />
+                <span className="bquiz-opt-label">{o.label}</span>
+                <span className="bquiz-opt-desc">{o.desc}</span>
               </button>
             ))}
           </div>
@@ -214,24 +185,24 @@ export default function BalconyQuoteQuiz({ mode = "balcony-netting", location = 
         </div>
       ) : result.custom ? (
         <div className="bquiz-body bquiz-result">
-          <h3 className="bquiz-range">This balcony needs a custom quote</h3>
+          <h3 className="bquiz-range">Things are looking a little too complicated here</h3>
           <p>
-            Due to the nature of your setup there may be some complications: special or non-standard balconies — no ceiling, high ceilings, or stucco/drywall walls — need a custom approach and non-standard mounting hardware.
+            It looks like that due to the nature of your setup there might be some complications. Please note that any special/non-standard balconies require a custom approach and extra work which would make the cost in excess of $500. Also, those balconies with no ceiling/high ceiling or stucco/drywall structure cannot be done using standard mounting hardware.
           </p>
           <p>
-            <b>Call us at <a href={telHref}>{phone}</a></b> to arrange a free on-site visit so we can assess and quote your project in detail — or send the form below and we'll call you.
+            <b>Please contact us directly at <a href={telHref}>{phone}</a></b> to arrange an on-site visit so we can assess and quote your project in detail, or use the form below to send us your details.
           </p>
           <QuizForm onSubmit={onSubmit} status={status} isNetting={isNetting} custom />
         </div>
       ) : (
         <div className="bquiz-body bquiz-result">
           <h3 className="bquiz-range">
-            Your average balcony {isNetting ? "netting" : "netting"} price range: <b>{result.tier.range}</b>
-            {result.needsCleaning ? " (not including cleaning service)" : ""}
+            Your average balcony netting price range: <b>{result.tier.range}</b>
+            {result.needsCleaning ? " (This doesn't include cleaning service.)" : ""}
           </h3>
           <p>{result.tier.note} {ESTIMATE_DISCLAIMER}</p>
           {result.needsCleaning && (
-            <p><b>Don't forget — the balcony should be cleaned and sanitized BEFORE the netting is installed.</b> We can do both in one visit.</p>
+            <p><b>Don't forget to have the balcony cleaned BEFORE the netting is installed</b> — we can do the cleanup and sanitization in the same visit.</p>
           )}
           {!isNetting && (
             <p>Pair your cleaning with netting and pigeons never come back — one visit, one crew, bundled pricing.</p>
@@ -249,23 +220,31 @@ function QuizForm({ onSubmit, status, isNetting, custom = false }) {
     <form className="bquiz-form" onSubmit={onSubmit}>
       <div className="qf-row">
         <div>
-          <label htmlFor="bq-name">Name *</label>
+          <label htmlFor="bq-name">Your Name *</label>
           <input id="bq-name" name="name" required autoComplete="name" />
         </div>
         <div>
-          <label htmlFor="bq-phone">Phone *</label>
+          <label htmlFor="bq-phone">Your Phone *</label>
           <input id="bq-phone" name="phone" type="tel" required autoComplete="tel" />
         </div>
       </div>
-      <label htmlFor="bq-email">Email</label>
-      <input id="bq-email" name="email" type="email" autoComplete="email" />
-      <label htmlFor="bq-msg">Anything else we should know?</label>
+      <div className="qf-row">
+        <div>
+          <label htmlFor="bq-email">Your Email</label>
+          <input id="bq-email" name="email" type="email" autoComplete="email" />
+        </div>
+        <div>
+          <label htmlFor="bq-city">Address / City</label>
+          <input id="bq-city" name="city" autoComplete="address-level2" />
+        </div>
+      </div>
+      <label htmlFor="bq-msg">Balcony Details</label>
       <textarea id="bq-msg" name="message" rows={3} placeholder="Building, floor, access notes, timeline…" />
       <button className="btn btn-accent" type="submit" disabled={status === "sending"} style={{ width: "100%", marginTop: 14 }}>
-        {status === "sending" ? "Sending…" : custom ? "Request My On-Site Visit" : isNetting ? "Lock In My Balcony Netting Quote" : "Book My Balcony Cleaning"}
+        {status === "sending" ? "Sending…" : custom ? "Request My On-Site Visit" : isNetting ? "Get My Balcony Netting Quote" : "Book My Balcony Cleaning"}
       </button>
       {status === "error" && <p className="form-note admin-err">Something went wrong — please call us instead.</p>}
-      <p className="form-note">No spam, ever. We reply within one business day.</p>
+      <p className="form-note">This is a quote request only and there is no obligation to you. We reply within one business day.</p>
     </form>
   );
 }
