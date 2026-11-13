@@ -89,7 +89,7 @@ export default async function LocalServicePage({ params }) {
               <li>Local {l.name} crews</li>
             </ul>
           </div>
-          <HeroPanel image={s.hero} services={content.services} formTitle={`${s.name} in ${l.name}`} chip={`${settings.aggregateRating.ratingValue} · ${settings.aggregateRating.reviewCount} reviews`} lockedService={s.name} />
+          <HeroPanel image={s.hero} services={content.services} formTitle={`${s.name} in ${l.name}`} chip={`${settings.aggregateRating.ratingValue} · ${settings.aggregateRating.reviewCount} reviews`} lockedService={s.name} hideForm={!!companion} />
         </div>
       </section>
 

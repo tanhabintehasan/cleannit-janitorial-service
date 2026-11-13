@@ -70,7 +70,7 @@ export default async function ServicePage({ params }) {
               <li>Insured crews</li>
             </ul>
           </div>
-          <HeroPanel image={s.hero} services={content.services} formTitle={`Schedule ${s.name}`} chip={`${settings.aggregateRating.ratingValue} · ${settings.aggregateRating.reviewCount} reviews`} lockedService={s.name} />
+          <HeroPanel image={s.hero} services={content.services} formTitle={`Schedule ${s.name}`} chip={`${settings.aggregateRating.ratingValue} · ${settings.aggregateRating.reviewCount} reviews`} lockedService={s.name} hideForm={!!companion} />
         </div>
         <HeroDecor />
       </section>

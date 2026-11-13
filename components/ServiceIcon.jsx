@@ -6,7 +6,7 @@ const icons = {
   "window-cleaning": <><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 3v18M4 12h16"/></>,
   "balcony-cleaning": <><path d="M3 21h18M5 21V8h14v13M5 12h14M9 8V5m6 3V5"/></>,
   "post-construction-cleaning": <><path d="M3 21h18M6 21V10l6-5 6 5v11"/><path d="M10 21v-4h4v4"/></>,
-  "bird-netting": <><path d="M4 6c4 4 12 4 16 0M4 12c4 4 12 4 16 0M4 18c4 4 12 4 16 0M8 4v16m8-16v16"/></>,
+  "balcony-netting": <><path d="M4 6c4 4 12 4 16 0M4 12c4 4 12 4 16 0M4 18c4 4 12 4 16 0M8 4v16m8-16v16"/></>,
   "office-cleaning": <><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></>,
   "house-cleaning": <><path d="M3 11l9-8 9 8M5 9v11h14V9"/><path d="M10 20v-5h4v5"/></>,
   "move-out-cleaning": <><path d="M9 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16"/><path d="M3 21h18M13 12h2m-8 4-3-3 3-3"/></>,

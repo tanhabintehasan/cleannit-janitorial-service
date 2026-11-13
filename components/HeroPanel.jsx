@@ -3,10 +3,10 @@ import QuoteForm from "./QuoteForm";
 
 // Hero right column: compact gradient-headed quote card on top, image with a
 // floating review chip below it.
-export default function HeroPanel({ image, services, formTitle = "Schedule a Free Quote", chip, lockedService = null }) {
+export default function HeroPanel({ image, services, formTitle = "Schedule a Free Quote", chip, lockedService = null, hideForm = false }) {
   return (
     <div className="hero-panel">
-      <QuoteForm services={services} compact formTitle={formTitle} lockedService={lockedService} />
+      {!hideForm && <QuoteForm services={services} compact formTitle={formTitle} lockedService={lockedService} />}
       {image?.src && (
         <div className="hero-img-wrap">
           <Image
