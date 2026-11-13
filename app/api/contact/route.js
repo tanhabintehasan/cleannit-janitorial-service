@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { addMessage } from "@/lib/content";
+import { sendLeadNotification } from "@/lib/email";
 
 export async function POST(req) {
   try {
@@ -9,14 +10,21 @@ export async function POST(req) {
     }
     // Honeypot-style guard: silently drop bot payloads with a website field.
     if (data.website) return NextResponse.json({ ok: true });
-    await addMessage({
+    const msg = {
       name: String(data.name).slice(0, 120),
       phone: String(data.phone).slice(0, 40),
       email: String(data.email || "").slice(0, 120),
       service: String(data.service || "").slice(0, 80),
       city: String(data.city || "").slice(0, 80),
       message: String(data.message || "").slice(0, 2000),
-    });
+    };
+    await addMessage(msg);
+    // Email notification is best-effort: never fail the submission if it errors.
+    try {
+      await sendLeadNotification(msg);
+    } catch (e) {
+      console.error("Lead email notification failed:", e?.message || e);
+    }
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
