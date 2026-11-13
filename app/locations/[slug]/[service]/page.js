@@ -179,7 +179,7 @@ export default async function LocalServicePage({ params }) {
         </div>
       </section>
 
-      {companion ? (
+      {companion && s.slug === "balcony-netting" ? (
         <section className="section-alt">
           <div className="container reveal">
             <span className="eyebrow">Complete the Job</span>
@@ -239,6 +239,23 @@ export default async function LocalServicePage({ params }) {
           </div>
         </div>
       </section>
+
+      {companion && s.slug === "balcony-cleaning" ? (
+        <section>
+          <div className="container reveal">
+            <span className="eyebrow">Suggested Next Step</span>
+            <h2>Keep It Clean: {companion.name} in {l.name}</h2>
+            <p style={{ maxWidth: 860 }}>A clean balcony attracts pigeons right back unless you block them. {companion.shortDesc} Most {l.name} cleaning clients add netting in the same visit — one crew, bundled pricing, and the mess never returns.</p>
+            <ul className="checklist grid grid-2" style={{ marginTop: 14 }}>
+              {companion.includes.items.slice(0, 6).map((it, i) => <li key={i}>{it}</li>)}
+            </ul>
+            <div className="hero-actions" style={{ marginTop: 20 }}>
+              <Link className="btn btn-primary" href={`/locations/${l.slug}/${companion.slug}`}>{companion.name} in {l.name} →</Link>
+              <Link className="btn btn-accent" href={`/locations/${l.slug}/${companion.slug}#balcony-quote`}>Get an Instant Netting Quote</Link>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section>
         <div className="container">
