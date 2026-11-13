@@ -11,6 +11,8 @@ import HeroPanel from "@/components/HeroPanel";
 import StatsBand from "@/components/StatsBand";
 import HeroDecor from "@/components/HeroDecor";
 import BalconyQuoteQuiz from "@/components/BalconyQuoteQuiz";
+import BeforeAfterSlider from "@/components/BeforeAfterSlider";
+import NetWorkVisual from "@/components/NetWorkVisual";
 import { priceTables } from "@/lib/local-content";
 
 // Balcony pair: each page leads with its own service and carries the other below.
@@ -80,6 +82,25 @@ export default async function ServicePage({ params }) {
           <div className="container reveal">
             <span className="eyebrow">Instant Estimate</span>
             <BalconyQuoteQuiz mode={s.slug} phone={settings.phone} />
+          </div>
+        </section>
+      ) : null}
+
+      {companion ? (
+        <section className="section-alt">
+          <div className="container reveal">
+            <span className="eyebrow">See the Difference</span>
+            <h2>From Pigeon Mess to Protected Balcony — Drag to Compare</h2>
+            <p style={{ maxWidth: 860 }}>Slide the handle to see what a Cleannit visit does: droppings and nesting mess removed, balcony sanitized, and discreet netting installed so pigeons never come back.</p>
+            <div style={{ marginTop: 20 }}>
+              <BeforeAfterSlider
+                before={{ src: "/images/bird-netting-pigeon-control-balcony-toronto.webp", alt: "Balcony ledge with roosting pigeons and droppings before cleaning" }}
+                after={{ src: "/images/condo-balcony-cleaning-toronto.webp", alt: "Clean Toronto condo balconies after cleaning and netting protection" }}
+                beforeLabel="Before: pigeon mess"
+                afterLabel="After: clean & netted"
+              />
+            </div>
+            <NetWorkVisual />
           </div>
         </section>
       ) : null}
