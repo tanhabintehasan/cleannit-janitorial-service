@@ -10,7 +10,11 @@ import QuoteForm from "@/components/QuoteForm";
 import HeroPanel from "@/components/HeroPanel";
 import StatsBand from "@/components/StatsBand";
 import HeroDecor from "@/components/HeroDecor";
+import BalconyQuoteQuiz from "@/components/BalconyQuoteQuiz";
 import { priceTables } from "@/lib/local-content";
+
+// Balcony pair: each page leads with its own service and carries the other below.
+const BALCONY_PAIR = { "balcony-cleaning": "balcony-netting", "balcony-netting": "balcony-cleaning" };
 
 export async function generateStaticParams() {
   const content = await getContent();
@@ -37,6 +41,8 @@ export default async function ServicePage({ params }) {
   const crumbs = [{ name: "Home", path: "/" }, { name: "Services", path: "/services" }, { name: s.name, path: `/services/${s.slug}` }];
   const related = (s.related || []).map((r) => content.services.find((x) => x.slug === r)).filter(Boolean);
   const blog = s.blogLink ? content.posts.find((p) => p.slug === s.blogLink) : null;
+  const companionSlug = BALCONY_PAIR[s.slug];
+  const companion = companionSlug ? content.services.find((x) => x.slug === companionSlug) : null;
 
   return (
     <>
@@ -68,6 +74,15 @@ export default async function ServicePage({ params }) {
       </section>
 
       <StatsBand />
+
+      {companion ? (
+        <section>
+          <div className="container reveal">
+            <span className="eyebrow">Instant Estimate</span>
+            <BalconyQuoteQuiz mode={s.slug} phone={settings.phone} />
+          </div>
+        </section>
+      ) : null}
 
       {s.experience ? (
         <section>
@@ -154,6 +169,23 @@ export default async function ServicePage({ params }) {
           <p style={{ maxWidth: 860 }}>{s.whyChoose}</p>
         </div>
       </section>
+
+      {companion ? (
+        <section className="section-alt">
+          <div className="container reveal">
+            <span className="eyebrow">Complete the Job</span>
+            <h2>{companion.name} in Toronto</h2>
+            <p style={{ maxWidth: 860 }}>{companion.shortDesc} {companion.whyChoose}</p>
+            <ul className="checklist grid grid-2" style={{ marginTop: 14 }}>
+              {companion.includes.items.slice(0, 6).map((it, i) => <li key={i}>{it}</li>)}
+            </ul>
+            <div className="hero-actions" style={{ marginTop: 20 }}>
+              <Link className="btn btn-primary" href={`/services/${companion.slug}`}>More About {companion.name} →</Link>
+              <a className="btn btn-accent" href="#balcony-quote">Get an Instant Quote</a>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {s.gallery?.length ? (
         <section className="section-alt">

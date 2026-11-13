@@ -9,6 +9,10 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import CtaBand from "@/components/CtaBand";
 import HeroPanel from "@/components/HeroPanel";
 import StatsBand from "@/components/StatsBand";
+import BalconyQuoteQuiz from "@/components/BalconyQuoteQuiz";
+
+// Balcony pair: each page leads with its own service and carries the other below.
+const BALCONY_PAIR = { "balcony-cleaning": "balcony-netting", "balcony-netting": "balcony-cleaning" };
 
 export async function generateStaticParams() {
   const content = await getContent();
@@ -56,6 +60,8 @@ export default async function LocalServicePage({ params }) {
   const sameCity = content.services.filter((x) => x.slug !== s.slug);
   const nearby = content.locations.filter((x) => x.slug !== l.slug);
   const rows = priceTables[s.slug] || [];
+  const companionSlug = BALCONY_PAIR[s.slug];
+  const companion = companionSlug ? content.services.find((x) => x.slug === companionSlug) : null;
 
   return (
     <>
@@ -86,6 +92,15 @@ export default async function LocalServicePage({ params }) {
       </section>
 
       <StatsBand />
+
+      {companion ? (
+        <section>
+          <div className="container reveal">
+            <span className="eyebrow">Instant Estimate</span>
+            <BalconyQuoteQuiz mode={s.slug} location={l.name} phone={settings.phone} />
+          </div>
+        </section>
+      ) : null}
 
       <section className="section-alt">
         <div className="container reveal">
@@ -142,6 +157,23 @@ export default async function LocalServicePage({ params }) {
           </div>
         </div>
       </section>
+
+      {companion ? (
+        <section className="section-alt">
+          <div className="container reveal">
+            <span className="eyebrow">Complete the Job</span>
+            <h2>{companion.name} in {l.name}</h2>
+            <p style={{ maxWidth: 860 }}>{companion.shortDesc} {companion.whyChoose}</p>
+            <ul className="checklist grid grid-2" style={{ marginTop: 14 }}>
+              {companion.includes.items.slice(0, 6).map((it, i) => <li key={i}>{it}</li>)}
+            </ul>
+            <div className="hero-actions" style={{ marginTop: 20 }}>
+              <Link className="btn btn-primary" href={`/locations/${l.slug}/${companion.slug}`}>{companion.name} in {l.name} →</Link>
+              <a className="btn btn-accent" href="#balcony-quote">Get an Instant Quote</a>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {s.gallery?.length ? (
         <section className="section-alt">
