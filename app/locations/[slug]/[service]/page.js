@@ -112,8 +112,8 @@ export default async function LocalServicePage({ params }) {
             <p style={{ maxWidth: 860 }}>Slide the handle to see what a Cleannit visit does: droppings and nesting mess removed, balcony sanitized, and discreet netting installed so pigeons never come back.</p>
             <div style={{ marginTop: 20 }}>
               <BeforeAfterSlider
-                before={{ src: "/images/bird-netting-pigeon-control-balcony-toronto.webp", alt: "Balcony ledge with roosting pigeons and droppings before cleaning" }}
-                after={{ src: "/images/condo-balcony-cleaning-toronto.webp", alt: "Clean condo balconies after cleaning and netting protection" }}
+                before={{ src: "/images/balcony-quiz/before-after-dirty.jpg", alt: "Balcony covered in pigeon droppings before Cleannit cleaning" }}
+                after={{ src: "/images/balcony-quiz/before-after-clean.jpg", alt: "The same balcony fully cleaned and sanitized after Cleannit service" }}
                 beforeLabel="Before: pigeon mess"
                 afterLabel="After: clean & netted"
               />
