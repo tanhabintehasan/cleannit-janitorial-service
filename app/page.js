@@ -67,11 +67,11 @@ export default async function HomePage() {
       </div>
 
       <section>
-        <div className="container reveal">
-          <span className="eyebrow">Who We Are</span>
+        <div className="container reveal" style={{ maxWidth: 860, textAlign: "center" }}>
+          <span className="eyebrow eyebrow-center">Who We Are</span>
           <h2>A Professional Cleaning Firm Toronto Trusts</h2>
-          <p style={{ maxWidth: 860, fontSize: "1.08rem" }}>{p.intro}</p>
-          <p style={{ maxWidth: 860 }}>Every account runs on a written checklist, supervisor audits and a named contact — the systems that have kept Cleannit growing on referrals and {settings.aggregateRating.reviewCount} client reviews since {settings.foundedYear}. Whether you manage a downtown office tower, a retail plaza in Mississauga or a condo balcony in Etobicoke, you get the same standard: Quality. Care. Consistency.</p>
+          <p style={{ fontSize: "1.08rem" }}>{p.intro}</p>
+          <p>Every account runs on a written checklist, supervisor audits and a named contact — the systems that have kept Cleannit growing on referrals and {settings.aggregateRating.reviewCount} client reviews since {settings.foundedYear}. Whether you manage a downtown office tower, a retail plaza in Mississauga or a condo balcony in Etobicoke, you get the same standard: Quality. Care. Consistency.</p>
         </div>
       </section>
 
