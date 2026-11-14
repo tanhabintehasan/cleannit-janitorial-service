@@ -3,10 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 
-// Instant balcony quote quiz.
-// mode "balcony-netting": pigeonbusters.ca-style 6-question netting quiz.
-// mode "balcony-cleaning": 6-question balcony CLEANING quiz with cleaning prices,
-// netting is only suggested afterwards (as a bottom companion section).
+// Instant balcony quote quiz — prices in CAD.
+// mode "balcony-netting": netting packages — Economy from $200, Standard from $350
+//   (materials + installation), complexity can push to a custom on-site quote.
+// mode "balcony-cleaning": cleaning packages —
+//   Full Balcony Cleaning $250 (door, windows, handrails, floor, walls, disinfecting)
+//   Floor-Only Cleaning $170 (floor, nest & poop removal, disinfecting)
+//   Add-ons: garbage removal $50, furniture cleaning $20.
 
 const IMG = "/images/balcony-quiz";
 
@@ -70,12 +73,11 @@ const NETTING_QUESTIONS = [
 
 const CLEANING_QUESTIONS = [
   {
-    key: "size",
-    q: "How big is your balcony?",
+    key: "package",
+    q: "Which cleaning package do you need?",
     options: [
-      { v: "small", pts: 0, img: `${IMG}/q1-shape.jpg`, label: "Small / Juliette.", desc: "A compact balcony or juliette-style — just enough room to step out." },
-      { v: "standard", pts: 1, img: `${IMG}/q1-flush.jpg`, label: "Standard condo balcony.", desc: "A typical condo or apartment balcony with room for a couple of chairs." },
-      { v: "large", pts: 2, img: `${IMG}/q1-flush-shared.jpg`, label: "Large / terrace / L-shaped.", desc: "A big terrace, wraparound or L-shaped balcony with lots of floor area." },
+      { v: "full", base: 250, img: "/images/cleaning-service-care-toronto-gta.webp", label: "Full Balcony Cleaning — $250.", desc: "Door, windows, handrails, floor, walls and full disinfecting — the complete reset." },
+      { v: "floor", base: 170, img: `${IMG}/q3-clean.jpg`, label: "Floor-Only Cleaning — $170.", desc: "Floor cleaning only, with nest & poop removal and disinfecting included." },
     ],
   },
   {
@@ -83,17 +85,17 @@ const CLEANING_QUESTIONS = [
     q: "How dirty is your balcony right now?",
     options: [
       { v: "light", pts: 0, img: `${IMG}/q3-clean.jpg`, label: "Light dust & pollen.", desc: "Mostly surface dust, pollen and cobwebs — no droppings or stains." },
-      { v: "moderate", pts: 2, img: "/images/condo-balcony-cleaning-toronto.webp", label: "Moderate grime & stains.", desc: "Built-up city grime, pollution film, drink or rust stains that need scrubbing." },
-      { v: "heavy", pts: 4, img: `${IMG}/q3-dirty.jpg`, label: "Heavy — pigeon droppings / nests.", desc: "Bird droppings, nesting material or heavy soiling that needs full sanitization." },
+      { v: "moderate", pts: 0, img: "/images/condo-balcony-cleaning-toronto.webp", label: "Moderate grime & stains.", desc: "Built-up city grime, pollution film, drink or rust stains that need scrubbing." },
+      { v: "heavy", pts: 0, img: `${IMG}/q3-dirty.jpg`, label: "Heavy — pigeon droppings / nests.", desc: "Bird droppings, nesting material or heavy soiling — sanitization is included in your package." },
     ],
   },
   {
     key: "furniture",
-    q: "Is there furniture or clutter to move?",
+    q: "Is there furniture or clutter on the balcony?",
     options: [
-      { v: "none", pts: 0, img: `${IMG}/q3-clean.jpg`, label: "Empty or almost empty.", desc: "Nothing (or almost nothing) on the balcony — we can start right away." },
-      { v: "few", pts: 1, img: `${IMG}/q4-open.jpg`, label: "A few items.", desc: "A couple of chairs, a small table or a few planters to work around." },
-      { v: "lots", pts: 2, img: `${IMG}/q1-protruding.jpg`, label: "Lots of furniture / storage.", desc: "Full furniture sets, storage boxes, bikes or gym equipment to move and reset." },
+      { v: "none", pts: 0, img: `${IMG}/q4-open.jpg`, label: "Empty or almost empty.", desc: "Nothing (or almost nothing) on the balcony — we can start right away." },
+      { v: "few", pts: 20, img: `${IMG}/q1-flush.jpg`, label: "Some furniture to clean.", desc: "Furniture cleaning add-on: +$20 — we clean and reset chairs, tables and planters." },
+      { v: "lots", pts: 70, img: `${IMG}/q1-protruding.jpg`, label: "Furniture + garbage to remove.", desc: "Furniture cleaning +$20 and garbage removal +$50 — we clear it, clean it and haul it out." },
     ],
   },
   {
@@ -101,17 +103,17 @@ const CLEANING_QUESTIONS = [
     q: "What kind of floor does your balcony have?",
     options: [
       { v: "concrete", pts: 0, img: `${IMG}/q5-concrete.jpg`, label: "Concrete.", desc: "Standard poured concrete balcony floor." },
-      { v: "tiles", pts: 1, img: `${IMG}/q5-wood.jpg`, label: "Interlocking deck tiles.", desc: "Wood or composite snap-in tiles — we lift, clean under and reset them." },
-      { v: "other", pts: 1, img: `${IMG}/q5-brick.jpg`, label: "Other / not sure.", desc: "Tile, membrane, astro-turf or a mix — we'll assess on arrival." },
+      { v: "tiles", pts: 0, img: `${IMG}/q5-wood.jpg`, label: "Interlocking deck tiles.", desc: "Wood or composite snap-in tiles — we lift, clean under and reset them." },
+      { v: "other", pts: 0, img: `${IMG}/q5-brick.jpg`, label: "Other / not sure.", desc: "Tile, membrane, astro-turf or a mix — we'll assess on arrival." },
     ],
   },
   {
-    key: "glass",
-    q: "Do the glass panels and railings need cleaning?",
+    key: "size",
+    q: "How big is your balcony?",
     options: [
-      { v: "glass", pts: 2, img: `${IMG}/q2-solid.jpg`, label: "Yes — glass panels, both sides.", desc: "Glass balcony panels cleaned inside and out, streak-free." },
-      { v: "open", pts: 1, img: `${IMG}/q2-railing.jpg`, label: "Open railing / bars only.", desc: "Metal bars or pickets — quicker to detail than full glass." },
-      { v: "minimal", pts: 0, img: `${IMG}/q2-solid-gap.jpg`, label: "Minimal / floor only.", desc: "Just the floor and surfaces — railings are fine as they are." },
+      { v: "small", pts: 0, img: `${IMG}/q1-shape.jpg`, label: "Small / Juliette.", desc: "A compact balcony or juliette-style — just enough room to step out." },
+      { v: "standard", pts: 0, img: `${IMG}/q1-flush.jpg`, label: "Standard condo balcony.", desc: "A typical condo or apartment balcony with room for a couple of chairs." },
+      { v: "large", pts: 0, img: `${IMG}/q1-flush-shared.jpg`, label: "Large / terrace / L-shaped.", desc: "A big terrace, wraparound or L-shaped balcony — final price confirmed by quote." },
     ],
   },
   {
@@ -125,51 +127,62 @@ const CLEANING_QUESTIONS = [
   },
 ];
 
-const NETTING_TIERS = [
-  { max: 4, range: "$325–$365", note: "Looks like your balcony is setup to be one of the easiest to work with! This will make setup and installation quick n' easy — you'll have a bird free balcony in no time." },
-  { max: 12, range: "$365–$425", note: "Nice — that was easy. You have a fairly standard balcony setup which makes it ideal for our services." },
-  { max: 45, range: "$385–$465", note: "All done. It looks like your balcony features some details that make installation a little more time consuming & complex — but we can handle it!" },
-  { max: 100, range: "$425–$495", note: "Well hello Mister Fancypants! It seems your balcony has a few complicated features on it that will make installation a little more involved, but it's nothing we can't handle." },
-];
-
-const CLEANING_TIERS = [
-  { max: 2, range: "$120–$180", note: "Great news — your balcony is one of the easiest to clean! A quick, thorough visit and you'll have your outdoor space back the same day." },
-  { max: 5, range: "$150–$220", note: "Nice — that's a fairly standard balcony clean. We'll deep-clean floors, railings and glass with our condo-board-friendly, low-moisture methods." },
-  { max: 8, range: "$180–$300", note: "All done. Your balcony needs a bit more elbow grease — furniture moving, deck-tile work or heavier grime — but nothing we don't do every week." },
-  { max: 99, range: "$250–$350", note: "Your balcony needs the full treatment — heavy soiling or droppings sanitization plus detail work. We'll mist, remove, sanitize and deodorize everything safely with proper PPE." },
-];
-
-const NETTING_DISCLAIMER =
-  "Please note that at this point this is still an estimation — the price could slightly be higher if your balcony has a divider/turns or if it is located on the top floor, where the ceiling can be higher than usual.";
-
-const CLEANING_DISCLAIMER =
-  "Please note that this is still an estimation — the final price is confirmed in a free written quote once we see your balcony photos or do a quick on-site look.";
-
-function scoreQuiz(answers, questions, tiers, cleaningMode) {
+// Netting: package from complexity points (cleaning points excluded from package pick).
+function scoreNetting(answers) {
   let pts = 0;
-  for (const q of questions) {
+  for (const q of NETTING_QUESTIONS) {
+    if (q.key === "cleaning") continue;
     const opt = q.options.find((o) => o.v === answers[q.key]);
     if (opt) pts += opt.pts;
   }
-  if (!cleaningMode && pts >= 101) return { custom: true };
-  const tier = tiers.find((t) => pts <= t.max);
+  if (pts >= 101) return { custom: true };
+  const economy = pts <= 12;
   return {
     custom: false,
-    tier,
-    needsCleaning: cleaningMode ? answers.condition === "heavy" : answers.cleaning === "yes",
+    pkg: economy ? "Economy" : "Standard",
+    price: economy ? "from $200 CAD" : "from $350 CAD",
+    needsCleaning: answers.cleaning === "yes",
+    note: economy
+      ? "Looks like your balcony is setup to be one of the easiest to work with! Our Economy package — materials and installation — has you covered."
+      : "Your balcony has some details that call for our Standard package — heavier-duty materials and a more involved installation, all handled by us.",
+  };
+}
+
+// Cleaning: package price + add-ons, all CAD.
+function scoreCleaning(answers) {
+  const pkgOpt = CLEANING_QUESTIONS[0].options.find((o) => o.v === answers.package);
+  const base = pkgOpt?.base ?? 250;
+  const items = [
+    pkgOpt?.v === "floor"
+      ? ["Floor-Only Cleaning (floor, nest & poop removal, disinfecting)", 170]
+      : ["Full Balcony Cleaning (door, windows, handrails, floor, walls, disinfecting)", 250],
+  ];
+  if (answers.furniture === "few") items.push(["Furniture cleaning", 20]);
+  if (answers.furniture === "lots") {
+    items.push(["Furniture cleaning", 20]);
+    items.push(["Garbage removal", 50]);
+  }
+  const total = items.reduce((sum, [, p]) => sum + p, 0);
+  return {
+    custom: false,
+    items,
+    total,
+    needsCleaning: answers.condition === "heavy",
+    note: answers.size === "large"
+      ? "Your balcony is on the larger side — the final price is confirmed in a free written quote, but this is a solid estimate."
+      : "Nice — that's a straightforward balcony clean for our crew, with condo-board-friendly low-moisture methods.",
   };
 }
 
 export default function BalconyQuoteQuiz({ mode = "balcony-netting", location = null, phone = "+1 437-288-7140" }) {
   const isNetting = mode === "balcony-netting";
   const questions = isNetting ? NETTING_QUESTIONS : CLEANING_QUESTIONS;
-  const tiers = isNetting ? NETTING_TIERS : CLEANING_TIERS;
   const [step, setStep] = useState(0); // 0..5 = questions, 6 = result
   const [answers, setAnswers] = useState({});
   const [status, setStatus] = useState(null);
 
   const telHref = `tel:${phone.replace(/[^0-9+]/g, "")}`;
-  const result = step === 6 ? scoreQuiz(answers, questions, tiers, !isNetting) : null;
+  const result = step === 6 ? (isNetting ? scoreNetting(answers) : scoreCleaning(answers)) : null;
 
   function pick(key, value) {
     setAnswers((a) => ({ ...a, [key]: value }));
@@ -186,7 +199,14 @@ export default function BalconyQuoteQuiz({ mode = "balcony-netting", location = 
       const opt = q.options.find((o) => o.v === answers[q.key]);
       return `${q.q} ${opt ? opt.label.replace(/\.$/, "") : "—"}`;
     });
-    const estimate = result?.custom ? "Custom quote required (on-site visit)" : `Quiz estimate: ${result?.tier?.range || "—"}`;
+    let estimate;
+    if (result?.custom) {
+      estimate = "Custom quote required (on-site visit)";
+    } else if (isNetting) {
+      estimate = `Quiz estimate: ${result?.pkg} package ${result?.price}${result?.needsCleaning ? " + cleaning $170–$250 CAD" : ""}`;
+    } else {
+      estimate = `Quiz estimate: $${result?.total} CAD (${(result?.items || []).map(([n, p]) => `${n} $${p}`).join(" + ")})`;
+    }
     data.message = [
       `[Instant balcony ${isNetting ? "netting" : "cleaning"} quote quiz${location ? ` — ${location}` : ""}]`,
       `Estimate: ${estimate}`,
@@ -220,8 +240,8 @@ export default function BalconyQuoteQuiz({ mode = "balcony-netting", location = 
           <h2>{heading}</h2>
           <p>
             {isNetting
-              ? "It's super easy! Just take this quick quiz to figure out how much it will cost to make your apartment balcony bird proof and put an end to your bird problems."
-              : "It's super easy! Just take this quick quiz to figure out how much it will cost to get your balcony professionally cleaned, sanitized and ready to enjoy."}
+              ? "It's super easy! Just take this quick quiz to figure out how much it will cost to make your apartment balcony bird proof and put an end to your bird problems. All prices in CAD."
+              : "It's super easy! Just take this quick quiz to figure out how much it will cost to get your balcony professionally cleaned, sanitized and ready to enjoy. All prices in CAD."}
           </p>
         </div>
         <div className="bquiz-head-img">
@@ -261,27 +281,35 @@ export default function BalconyQuoteQuiz({ mode = "balcony-netting", location = 
         <div className="bquiz-body bquiz-result">
           <h3 className="bquiz-range">Things are looking a little too complicated here</h3>
           <p>
-            It looks like that due to the nature of your setup there might be some complications. Please note that any special/non-standard balconies require a custom approach and extra work which would make the cost in excess of $500. Also, those balconies with no ceiling/high ceiling or stucco/drywall structure cannot be done using standard mounting hardware.
+            It looks like that due to the nature of your setup there might be some complications. Please note that any special/non-standard balconies require a custom approach and extra work which would make the cost in excess of $500 CAD. Also, those balconies with no ceiling/high ceiling or stucco/drywall structure cannot be done using standard mounting hardware.
           </p>
           <p>
             <b>Please contact us directly at <a href={telHref}>{phone}</a></b> to arrange an on-site visit so we can assess and quote your project in detail, or use the form below to send us your details.
           </p>
           <QuizForm onSubmit={onSubmit} status={status} isNetting={isNetting} custom />
         </div>
+      ) : isNetting ? (
+        <div className="bquiz-body bquiz-result">
+          <h3 className="bquiz-range">
+            Your balcony netting package: <b>{result.pkg} — {result.price}</b>
+          </h3>
+          <p>{result.note} Materials and professional installation are included. This is still an estimate — the price could be slightly higher if your balcony has extra dividers/turns or a higher-than-usual ceiling. Final price confirmed in a free written quote.</p>
+          {result.needsCleaning && (
+            <p><b>Don't forget — the balcony should be cleaned BEFORE the netting is installed.</b> Add balcony cleaning: Floor-Only $170 CAD or Full Cleaning $250 CAD — same visit, one crew.</p>
+          )}
+          <QuizForm onSubmit={onSubmit} status={status} isNetting={isNetting} />
+          <p className="form-note">Prefer to talk? Call <a href={telHref}>{phone}</a> — free written quotes, confirmed before any work begins.</p>
+        </div>
       ) : (
         <div className="bquiz-body bquiz-result">
           <h3 className="bquiz-range">
-            Your average balcony {isNetting ? "netting" : "cleaning"} price range: <b>{result.tier.range}</b>
-            {!isNetting && result.needsCleaning ? " (including droppings sanitization)" : ""}
-            {isNetting && result.needsCleaning ? " (This doesn't include cleaning service.)" : ""}
+            Your balcony cleaning estimate: <b>${result.total} CAD</b>
           </h3>
-          <p>{result.tier.note} {isNetting ? NETTING_DISCLAIMER : CLEANING_DISCLAIMER}</p>
-          {isNetting && result.needsCleaning && (
-            <p><b>Don't forget to have the balcony cleaned BEFORE the netting is installed</b> — we can do the cleanup and sanitization in the same visit.</p>
-          )}
-          {!isNetting && (
-            <p><b>Want to keep it clean for good?</b> Add discreet balcony netting from $325 and pigeons never come back — one visit, one crew, bundled pricing.</p>
-          )}
+          <ul className="checklist" style={{ margin: "10px 0 14px" }}>
+            {result.items.map(([n, p]) => <li key={n}>{n} — <b>${p} CAD</b></li>)}
+          </ul>
+          <p>{result.note} This is still an estimate — the final price is confirmed in a free written quote before any work begins.</p>
+          <p><b>Want to keep it clean for good?</b> Add balcony netting — Economy from $200 CAD or Standard from $350 CAD, materials and installation included — and pigeons never come back.</p>
           <QuizForm onSubmit={onSubmit} status={status} isNetting={isNetting} />
           <p className="form-note">Prefer to talk? Call <a href={telHref}>{phone}</a> — free written quotes, confirmed before any work begins.</p>
         </div>
